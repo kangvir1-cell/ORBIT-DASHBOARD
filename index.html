@@ -21,8 +21,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172033}.app
 </div>
 <div class="section">
 <h3>1. Scan / Enter ASIN or Barcode</h3>
-<div class="row"><input id="scan" placeholder="Scan barcode or enter ASIN" onkeydown="if(event.key==='Enter')lookup()"><button class="btn" id="lookupBtn" onclick="lookup()">Find Product</button></div>
-<div class="muted">Barcode lookup uses a live product-identification API for testing. Amazon.in search is opened separately for verification. Final Amazon API integration will be added after credentials/access are available.</div>
+<div class="row"><input id="scan" placeholder="Scan barcode or enter ASIN — product details load automatically" autocomplete="off" autofocus><button class="btn" id="lookupBtn" onclick="lookup()">Find Product</button></div>
+<div class="muted">Scan or enter a barcode/ASIN. ORBIT automatically starts the product lookup; the button remains available as a manual retry.</div>
 <div id="status" class="status" style="display:none"></div>
 <div id="preview" class="preview"><div class="img"><img id="pimg" alt=""></div><div><div class="pname" id="pname"></div><div class="muted" id="pmeta"></div><div class="muted" id="pasin"></div></div><div class="value"><small>VALUE (INR)</small><span id="pvalue">—</span></div></div>
 </div>
@@ -32,6 +32,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172033}.app
 </main></div>
 <script>
 let filter='ALL';
+let autoTimer=null;
+let lastAutoValue='';
 let records=[
 {id:1,site:'JULD',asin:'B0DEMO001',barcode:'890000000001',product:'Demo Wireless Headphones',value:2499,received:new Date(Date.now()-30*3600000).toISOString(),task:'Pending',tid:''},
 {id:2,site:'JULD',asin:'B0DEMO002',barcode:'890000000002',product:'Demo Stainless Steel Bottle 1L',value:899,received:new Date(Date.now()-55*3600000).toISOString(),task:'Completed',tid:'304r'},
@@ -47,8 +49,31 @@ let show=rs.filter(r=>filter==='ALL'||(filter==='DAY4'?age(r)===4:r.task===filte
 document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+r.asin+'</b></td><td>'+r.barcode+'</td><td>'+r.product+'</td><td><b>'+r.value+'</b></td><td><img src="'+imgFallback('Product')+'" style="width:42px;height:42px;border:1px solid #ddd;border-radius:7px"></td><td>'+new Date(r.received).toLocaleString('en-IN')+'</td><td>'+r.task+'</td><td><span class="age '+(age(r)===1?'d1':age(r)===2?'d2':age(r)===3?'d3':'d4')+'">'+age(r)+(age(r)===4?'+':'')+'</span></td><td>'+ (r.tid||'—') +'</td><td><button class="edit" onclick="editRecord('+r.id+')">✎</button></td></tr>').join(''):'<tr><td colspan="11" class="empty">No records for this site/filter.</td></tr>'}
 function setFilter(f,btn){filter=f;document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');render()}
 document.getElementById('siteCode').addEventListener('input',render);
+
+const scanInput=document.getElementById('scan');
+scanInput.addEventListener('keydown',function(event){
+  if(event.key==='Enter'){
+    event.preventDefault();
+    clearTimeout(autoTimer);
+    lookup();
+  }
+});
+scanInput.addEventListener('input',function(){
+  const value=this.value.trim();
+  clearTimeout(autoTimer);
+  if(!value || value===lastAutoValue) return;
+  // Barcode scanners usually type very quickly; manual entry gets a short debounce.
+  autoTimer=setTimeout(()=>{
+    if(scanInput.value.trim()===value){
+      lastAutoValue=value;
+      lookup();
+    }
+  },350);
+});
+
 async function lookup(){
   const input=document.getElementById("scan").value.trim();
+  if(input) lastAutoValue=input;
   const st=document.getElementById("status");
   const pv=document.getElementById("preview");
   const b=document.getElementById("lookupBtn");
