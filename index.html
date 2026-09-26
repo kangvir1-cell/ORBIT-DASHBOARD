@@ -73,27 +73,19 @@ scanInput.addEventListener('input',function(){
 
 async function lookup(){
   const input=document.getElementById("scan").value.trim();
-  if(input) lastAutoValue=input;
   const st=document.getElementById("status");
   const pv=document.getElementById("preview");
   const b=document.getElementById("lookupBtn");
-
   if(!input){
-    st.style.display="block";
-    st.className="status";
+    st.style.display="block"; st.className="status";
     st.textContent="Please scan or enter an ASIN/barcode.";
     return;
   }
+  st.style.display="block"; st.className="status";
+  st.textContent="Fetching product details automatically…";
+  b.disabled=true; pv.classList.remove("show");
+  lastAutoValue=input;
 
-  st.style.display="block";
-  st.className="status";
-  st.textContent="Searching live product data…";
-  b.disabled=true;
-  pv.classList.remove("show");
-
-  const amazonUrl="https://www.amazon.in/s?k="+encodeURIComponent(input);
-
-  // Fast local test records so the dashboard is immediately testable.
   const demo={
     "890000000001":{name:"Demo Wireless Headphones",value:2499,asin:"B0DEMO001"},
     "890000000002":{name:"Demo Stainless Steel Bottle 1L",value:899,asin:"B0DEMO002"},
@@ -109,91 +101,73 @@ async function lookup(){
     document.getElementById("pimg").src=imgFallback(p.name);
     pv.classList.add("show");
     st.className="status ok";
-    st.textContent="Demo product matched successfully. The lookup button is working.";
-    b.disabled=false;
-    return;
+    st.textContent="Product details loaded automatically.";
+    b.disabled=false; return;
   }
 
-  // ASIN: open Amazon.in for direct verification.
+  // ASIN lookup: identify the input immediately and show it in the dashboard.
   if(/^B[A-Z0-9]{9,}$/i.test(input)){
+    document.getElementById("pname").textContent="Amazon product";
+    document.getElementById("pmeta").textContent="ASIN: "+input.toUpperCase();
+    document.getElementById("pasin").textContent="Enter/scan the product barcode for automatic barcode identification.";
+    document.getElementById("pvalue").textContent="—";
+    document.getElementById("pimg").src=imgFallback("Amazon");
+    pv.classList.add("show");
     st.className="status ok";
-    st.innerHTML="";
-    const msg=document.createElement("span");
-    msg.textContent="ASIN detected. Verify the product on Amazon.in: ";
-    const a=document.createElement("a");
-    a.href=amazonUrl;
-    a.target="_blank";
-    a.rel="noopener noreferrer";
-    a.textContent="Open Amazon.in";
-    a.style.fontWeight="800";
-    st.append(msg,a);
-    b.disabled=false;
-    return;
+    st.textContent="ASIN detected. Barcode lookup is available automatically when a barcode is scanned.";
+    b.disabled=false; return;
   }
 
-  // Barcode/EAN lookup through a public lookup endpoint via a CORS relay.
-  const target="https://api.upcitemdb.com/prod/trial/lookup?upc="+encodeURIComponent(input);
-  const proxy="https://corsproxy.io/?url="+encodeURIComponent(target);
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),12000);
+  // Try several public product databases. The first successful source wins.
+  const sources=[
+    {name:"BarcodeFinder",url:"https://www.barcodefinder.info/v1/product/"+encodeURIComponent(input)},
+    {name:"UPCitemDB",url:"https://api.upcitemdb.com/prod/trial/lookup?upc="+encodeURIComponent(input)},
+    {name:"Open Food Facts",url:"https://world.openfoodfacts.org/api/v2/product/"+encodeURIComponent(input)+".json"}
+  ];
 
+  let lastError=null;
   try{
-    const resp=await fetch(proxy,{signal:controller.signal});
-    if(!resp.ok) throw new Error("HTTP "+resp.status);
+    for(const source of sources){
+      try{
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),7000);
+        const resp=await fetch(source.url,{signal:controller.signal,headers:{"Accept":"application/json"}});
+        clearTimeout(timer);
+        if(!resp.ok) throw new Error(source.name+" HTTP "+resp.status);
+        const data=await resp.json();
 
-    const data=await resp.json();
+        let item=null;
+        if(source.name==="BarcodeFinder"){
+          item=data.product||data;
+          if(item && item.found===false) item=null;
+        }else if(source.name==="UPCitemDB"){
+          item=data.items&&data.items[0];
+        }else{
+          item=data.status===1?data.product:null;
+        }
+        if(!item) continue;
 
-    if(!data.items || !data.items.length){
-      st.className="status";
-      st.innerHTML="";
-      const msg=document.createElement("span");
-      msg.textContent="No live product match was returned for this barcode. ";
-      const a=document.createElement("a");
-      a.href=amazonUrl;
-      a.target="_blank";
-      a.rel="noopener noreferrer";
-      a.textContent="Check Amazon.in";
-      a.style.fontWeight="800";
-      st.append(msg,a);
-      return;
+        const title=item.title||item.name||item.product_name||"Product found";
+        const brand=item.brand||item.brands||"";
+        const image=(item.images&&item.images[0])||item.image_url||item.image_front_url||"";
+        const asin=item.asin||item.ASIN||"";
+        const value=item.lowest_recorded_price??item.price??item.msrp??item.list_price??"—";
+
+        document.getElementById("pname").textContent=title;
+        document.getElementById("pmeta").textContent=(brand?"Brand: "+brand+" • ":"")+"Barcode: "+input;
+        document.getElementById("pasin").textContent="ASIN: "+(asin||"Not provided by barcode source");
+        document.getElementById("pvalue").textContent=String(value);
+        document.getElementById("pimg").src=image||imgFallback(title);
+        pv.classList.add("show");
+        st.className="status ok";
+        st.textContent="Product details loaded automatically from "+source.name+".";
+        b.disabled=false;
+        return;
+      }catch(e){ lastError=e; }
     }
-
-    const item=data.items[0];
-    const title=item.title || "Product found";
-    document.getElementById("pname").textContent=title;
-    document.getElementById("pmeta").textContent="Brand: "+(item.brand||"—")+" • EAN/GTIN: "+(item.ean||input);
-    document.getElementById("pasin").textContent="ASIN: "+(item.asin||"Not provided by this source");
-    document.getElementById("pvalue").textContent=item.lowest_recorded_price==null?"—":String(item.lowest_recorded_price);
-    document.getElementById("pimg").src=(item.images&&item.images[0])||imgFallback(title);
-    pv.classList.add("show");
-
-    st.className="status ok";
-    st.innerHTML="";
-    const msg=document.createElement("span");
-    msg.textContent="Live barcode match found. ";
-    const a=document.createElement("a");
-    a.href="https://www.amazon.in/s?k="+encodeURIComponent(item.asin||title||input);
-    a.target="_blank";
-    a.rel="noopener noreferrer";
-    a.textContent="Verify on Amazon.in";
-    a.style.fontWeight="800";
-    st.append(msg,a);
-  }catch(e){
     st.className="status";
-    st.innerHTML="";
-    const msg=document.createElement("span");
-    msg.textContent=e.name==="AbortError"
-      ?"Lookup timed out after 12 seconds. "
-      :"The live barcode service could not be reached from this browser. ";
-    const a=document.createElement("a");
-    a.href=amazonUrl;
-    a.target="_blank";
-    a.rel="noopener noreferrer";
-    a.textContent="Open Amazon.in Search";
-    a.style.fontWeight="800";
-    st.append(msg,a);
+    st.textContent=lastError?"Product service could not return a record for this barcode. Try again or use another barcode.":"No product record was found for this barcode.";
   }finally{
-    clearTimeout(timer);
     b.disabled=false;
   }
 }
