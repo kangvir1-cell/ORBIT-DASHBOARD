@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORBIT - Product Identification Test</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:40px;color:#172033}
+.card{max-width:760px;margin:auto;background:white;border-radius:16px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+h1{margin:0 0 6px}.sub{color:#687386;margin-bottom:24px}
+label{font-weight:700;display:block;margin-bottom:8px}
+.row{display:flex;gap:10px}.row input{flex:1}
+input{padding:14px;border:1px solid #ccd3dc;border-radius:9px;font-size:16px}
+button{padding:14px 18px;border:0;border-radius:9px;background:#172033;color:white;font-weight:700;cursor:pointer}
+.result{margin-top:24px;border:1px solid #dde3ea;border-radius:12px;padding:20px}
+.grid{display:grid;grid-template-columns:150px 1fr;gap:14px;margin-top:15px}
+.value{font-weight:700}
+.status{padding:10px;border-radius:8px;background:#fff3cd;margin-top:15px}
+.note{font-size:13px;color:#697386;margin-top:18px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>ORBIT</h1>
+<div class="sub">Product Identification — Live Testing Version</div>
+
+<label for="code">Scan / Enter ASIN or Product Barcode</label>
+<div class="row">
+<input id="code" autofocus placeholder="e.g. 8901396393306 or B0XXXXXXXX">
+<button onclick="searchAmazon()">Search Amazon.in</button>
+</div>
+
+<div id="result" class="result" style="display:none"></div>
+
+<div class="note">
+This test opens a real Amazon.in search for the entered identifier so you can verify whether the physical barcode/ASIN can identify the intended product.
+A browser-only prototype cannot reliably extract Amazon.in product data automatically because Amazon controls access to its pages. Automatic Product Name / Image / Value population requires an approved data/API integration.
+</div>
+</div>
+
+<script>
+function searchAmazon(){
+  const code=document.getElementById('code').value.trim();
+  const result=document.getElementById('result');
+  if(!code){alert('Please scan or enter a barcode/ASIN.');return;}
+  const url='https://www.amazon.in/s?k='+encodeURIComponent(code);
+  result.style.display='block';
+  result.innerHTML=
+    '<b>Testing identifier:</b> '+escapeHtml(code)+
+    '<div class="status">Amazon.in search opened. Check whether the returned product matches the physical orphan item.</div>'+
+    '<div style="margin-top:14px"><button onclick="window.open(\''+url+'\',\'_blank\')">Open Amazon.in Result</button></div>'+
+    '<div class="grid">'+
+    '<div>Input</div><div class="value">'+escapeHtml(code)+'</div>'+
+    '<div>Lookup type</div><div class="value">'+(isAsin(code)?'ASIN':'Barcode / EAN / GTIN')+'</div>'+
+    '</div>';
+}
+function isAsin(s){return /^B0[A-Z0-9]{8,}$/.test(s.toUpperCase());}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+document.getElementById('code').addEventListener('keydown',e=>{if(e.key==='Enter')searchAmazon()});
+</script>
+</body>
+</html>
