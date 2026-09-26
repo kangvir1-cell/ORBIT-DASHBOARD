@@ -1,62 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ORBIT - Product Identification Test</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ORBIT — Orphan Resolution and Backlog Intelligence Tracker</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:40px;color:#172033}
-.card{max-width:760px;margin:auto;background:white;border-radius:16px;padding:28px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
-h1{margin:0 0 6px}.sub{color:#687386;margin-bottom:24px}
-label{font-weight:700;display:block;margin-bottom:8px}
-.row{display:flex;gap:10px}.row input{flex:1}
-input{padding:14px;border:1px solid #ccd3dc;border-radius:9px;font-size:16px}
-button{padding:14px 18px;border:0;border-radius:9px;background:#172033;color:white;font-weight:700;cursor:pointer}
-.result{margin-top:24px;border:1px solid #dde3ea;border-radius:12px;padding:20px}
-.grid{display:grid;grid-template-columns:150px 1fr;gap:14px;margin-top:15px}
-.value{font-weight:700}
-.status{padding:10px;border-radius:8px;background:#fff3cd;margin-top:15px}
-.note{font-size:13px;color:#697386;margin-top:18px;line-height:1.5}
+:root{--bg:#f4f6f8;--panel:#fff;--text:#172033;--muted:#687386;--line:#e2e7ee;--nav:#111827;--nav2:#253047;--accent:#ffb000;--blue:#2563eb;--green:#16a34a;--yellow:#ca8a04;--amber:#ea580c;--red:#dc2626;--shadow:0 8px 28px rgba(15,23,42,.08);--radius:14px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{min-height:100vh;display:flex}.sidebar{width:250px;background:linear-gradient(180deg,var(--nav),#0f172a);color:#fff;padding:18px 14px;position:fixed;left:0;top:0;bottom:0;z-index:10}.brand{display:flex;gap:10px;align-items:center;padding:8px 10px 18px;border-bottom:1px solid rgba(255,255,255,.1)}.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--accent);display:grid;place-items:center;color:#111827;font-weight:900}.brand small{display:block;color:#aab4c5;font-size:10px;margin-top:2px}.nav{margin-top:18px;display:grid;gap:7px}.nav button{border:0;background:transparent;color:#d1d5db;text-align:left;padding:12px 13px;border-radius:10px;font-size:14px;cursor:pointer}.nav button:hover,.nav button.active{background:var(--nav2);color:#fff}.sidebar-footer{position:absolute;left:14px;right:14px;bottom:14px;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,.05);font-size:10px;color:#9ca3af;line-height:1.5}
+.main{margin-left:250px;flex:1;padding:24px;max-width:1700px}.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px}h1{font-size:26px;margin:0 0 4px}.subtitle{font-size:13px;color:var(--muted)}.badge{background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:999px;font-size:12px;color:#475569}
+.sitebar{display:flex;align-items:end;gap:12px;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px;margin-bottom:16px;box-shadow:var(--shadow)}.site-field{width:210px}.site-label{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}.site-note{font-size:11px;color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.metric{padding:16px;cursor:pointer;transition:.15s transform,.15s box-shadow;border:2px solid transparent}.metric:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(15,23,42,.12)}.metric.active{border-color:#94a3b8}.metric .label{font-size:12px;color:var(--muted)}.metric .value{font-size:28px;font-weight:850;margin-top:6px}.metric .mini{font-size:11px;color:var(--muted);margin-top:4px}
+.section{padding:18px;margin-bottom:18px}.section-title{font-size:15px;font-weight:850;margin-bottom:12px}.scan{display:grid;grid-template-columns:1fr auto;gap:10px}input,select{width:100%;border:1px solid #cfd5df;background:#fff;padding:11px 12px;border-radius:9px;font-size:14px;outline:none}input:focus,select:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.12)}button.primary{background:#111827;color:#fff;border:0;border-radius:9px;padding:11px 16px;font-weight:800;cursor:pointer}.primary:hover{background:#263244}button.secondary{background:#fff;color:#111827;border:1px solid var(--line);border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer}.secondary:hover{background:#f8fafc}.icon-btn{border:1px solid var(--line);background:#fff;color:#111827;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px}.icon-btn:hover{background:#f1f5f9}.hint{font-size:11px;color:var(--muted);margin-top:8px}.product-preview{display:none;grid-template-columns:92px 1fr auto;align-items:center;gap:14px;padding:12px;margin-top:12px;border:1px dashed #cbd5e1;border-radius:12px;background:#fafafa}.product-preview.show{display:grid}.product-img{width:88px;height:88px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;display:grid;place-items:center;overflow:hidden}.product-img img{width:100%;height:100%;object-fit:contain}.product-name{font-weight:800;font-size:14px;line-height:1.35}.product-meta{font-size:12px;color:var(--muted);margin-top:4px}.mrp{font-size:20px;font-weight:900;text-align:right}.mrp small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.pillbar{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;cursor:pointer}.pill.active{background:#111827;color:#fff;border-color:#111827}.filter-title{font-size:12px;color:var(--muted);margin-top:5px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:1200px}.table th{position:sticky;top:0;background:#f8fafc;color:#475569;font-size:10px;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:11px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.table td{padding:11px;border-bottom:1px solid var(--line);vertical-align:middle;background:#fff}.table tr:hover td{background:#fbfdff}.thumb{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);object-fit:contain;background:#fff}.status{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:999px;font-weight:800;font-size:11px}.status.pending{background:#fff7ed;color:#b45309}.status.completed{background:#ecfdf5;color:#15803d}.age{display:inline-flex;align-items:center;gap:7px;padding:5px 8px;border-radius:8px;font-weight:850;font-size:12px;min-width:34px;justify-content:center}.age-dot{width:8px;height:8px;border-radius:50%}.age.day1{background:#dcfce7;color:#166534}.age.day1 .age-dot{background:var(--green)}.age.day2{background:#fef9c3;color:#854d0e}.age.day2 .age-dot{background:var(--yellow)}.age.day3{background:#ffedd5;color:#9a3412}.age.day3 .age-dot{background:var(--amber)}.age.day4{background:#fee2e2;color:#991b1b}.age.day4 .age-dot{background:var(--red)}.empty{padding:32px;text-align:center;color:var(--muted)}.hidden{display:none!important}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.modal.show{display:flex}.modal-box{width:min(650px,100%);background:#fff;border-radius:16px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.modal-header{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:transparent;font-size:24px;cursor:pointer}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.form-grid .full{grid-column:1/-1}.small-label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;font-weight:700}.toast{position:fixed;right:22px;bottom:22px;background:#111827;color:#fff;padding:12px 14px;border-radius:10px;box-shadow:var(--shadow);display:none;z-index:50;font-size:13px}.toast.show{display:block}.legend{font-size:11px;color:var(--muted);margin-top:7px}
+@media(max-width:1050px){.sidebar{width:210px}.main{margin-left:210px}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:720px){.sidebar{position:static;width:100%;height:auto}.sidebar-footer{display:none}.app{display:block}.main{margin-left:0;padding:14px}.grid{grid-template-columns:1fr 1fr}.scan{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.sitebar{align-items:stretch;flex-direction:column}.site-field{width:100%}}
 </style>
 </head>
 <body>
-<div class="card">
-<h1>ORBIT</h1>
-<div class="sub">Product Identification — Live Testing Version</div>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">O</div><div><strong>ORBIT</strong><small>Orphan Resolution and Backlog Intelligence Tracker</small></div></div>
+  <div class="nav">
+    <button id="navOps" class="active" onclick="showPage('ops')">⚙ Operations</button>
+    <button id="navData" onclick="showPage('data')">▤ Stored Data</button>
+    <button onclick="openGuide()">? Workflow Guide</button>
+  </div>
+  <div class="sidebar-footer">Prototype storage is local to this browser. Amazon/SCC/EagleEye integrations are not connected in this prototype.</div>
+</aside>
+<main class="main">
+<section id="pageOps">
+  <div class="topbar"><div><h1>ORBIT</h1><div class="subtitle">Orphan Resolution and Backlog Intelligence Tracker</div></div><span class="badge">Operations</span></div>
+  <div class="sitebar">
+    <div><div style="font-weight:800;font-size:13px">Site-specific processing</div><div class="site-note">Only records belonging to the selected Site Code are shown and counted on this screen.</div></div>
+    <div class="site-field"><label class="site-label" for="siteCode">Site Code</label><input id="siteCode" value="JULD" maxlength="20" oninput="changeSite()" /></div>
+  </div>
 
-<label for="code">Scan / Enter ASIN or Product Barcode</label>
-<div class="row">
-<input id="code" autofocus placeholder="e.g. 8901396393306 or B0XXXXXXXX">
-<button onclick="searchAmazon()">Search Amazon.in</button>
+  <div class="grid" id="metrics">
+    <div class="card metric" data-filter="ALL" onclick="setMetricFilter('ALL',this)"><div class="label">Total Orphans</div><div class="value" id="mTotal">0</div><div class="mini">All active orphan records</div></div>
+    <div class="card metric" data-filter="PENDING" onclick="setMetricFilter('PENDING',this)"><div class="label">Pending</div><div class="value" id="mPending">0</div><div class="mini">Awaiting TID / reconciliation</div></div>
+    <div class="card metric" data-filter="COMPLETED" onclick="setMetricFilter('COMPLETED',this)"><div class="label">Completed</div><div class="value" id="mCompleted">0</div><div class="mini">Completed within last 7 days</div></div>
+    <div class="card metric" data-filter="DAY4" onclick="setMetricFilter('DAY4',this)"><div class="label">Day 4+</div><div class="value" id="mCritical">0</div><div class="mini">Active ageing 4 days or more</div></div>
+  </div>
+
+  <div class="card section">
+    <div class="section-title">1. Scan / Enter ASIN or Barcode</div>
+    <div class="scan"><input id="scanInput" autocomplete="off" placeholder="Scan barcode or enter ASIN (e.g. B0DEMO001 / 890000000001)" onkeydown="handleScanKey(event)" /><button class="primary" onclick="lookupProduct()">Find Product</button></div>
+    <div class="hint">Use either the physical product barcode or the Amazon ASIN. Scanner input is treated like keyboard input.</div>
+    <div class="product-preview" id="preview">
+      <div class="product-img"><img id="previewImg" alt="Product preview" /></div>
+      <div><div class="product-name" id="previewName">—</div><div class="product-meta" id="previewMeta">—</div></div>
+      <div class="mrp"><small>VALUE (INR)</small><span id="previewMrp">—</span></div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="section-title">2. Processing Queue</div>
+    <div class="toolbar">
+      <div><div class="pillbar"><button class="pill active" data-pill="ALL" onclick="setQueueFilter('ALL',this)">All</button><button class="pill" data-pill="PENDING" onclick="setQueueFilter('PENDING',this)">Pending</button><button class="pill" data-pill="COMPLETED" onclick="setQueueFilter('COMPLETED',this)">Completed</button></div><div class="filter-title" id="queueFilterTitle">Showing: All active orphans</div></div>
+      <button class="secondary" onclick="exportCsv()">Export Excel-compatible CSV</button>
+    </div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Sr.</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Image</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Edit</th></tr></thead><tbody id="opsBody"></tbody></table></div>
+    <div class="legend">Ageing colours: 1 = Green • 2 = Yellow • 3 = Amber • 4+ = Red</div>
+  </div>
+</section>
+
+<section id="pageData" class="hidden">
+  <div class="topbar"><div><h1>Stored / Processed Data</h1><div class="subtitle">Search, filter and export stored orphan records for the selected Site Code.</div></div><span class="badge">Historical + active records</span></div>
+  <div class="card section">
+    <div class="toolbar"><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="searchData" placeholder="Search ASIN, barcode, product or TID" oninput="renderData()" /><select id="statusData" onchange="renderData()"><option value="ALL">All Statuses</option><option value="Pending">Pending</option><option value="Completed">Completed</option></select></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" onclick="exportCsv(true)">Export CSV</button><button class="secondary" onclick="printReport()">Print / Save PDF</button></div></div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Sr.</th><th>Site</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Completed</th><th>Edit</th></tr></thead><tbody id="dataBody"></tbody></table></div>
+  </div>
+</section>
+</main>
 </div>
 
-<div id="result" class="result" style="display:none"></div>
-
-<div class="note">
-This test opens a real Amazon.in search for the entered identifier so you can verify whether the physical barcode/ASIN can identify the intended product.
-A browser-only prototype cannot reliably extract Amazon.in product data automatically because Amazon controls access to its pages. Automatic Product Name / Image / Value population requires an approved data/API integration.
-</div>
-</div>
-
+<div class="modal" id="editModal"><div class="modal-box"><div class="modal-header"><div><h2 style="margin:0;font-size:18px">Edit Orphan Record</h2><div style="font-size:12px;color:#6b7280;margin-top:3px">Correct any incorrectly scanned or entered details.</div></div><button class="close" onclick="closeEdit()">×</button></div>
+<div class="form-grid"><div><label class="small-label">Site Code</label><input id="editSite"></div><div><label class="small-label">ASIN ID</label><input id="editAsin"></div><div><label class="small-label">Barcode</label><input id="editBarcode"></div><div><label class="small-label">Value (INR)</label><input id="editValue" inputmode="decimal"></div><div class="full"><label class="small-label">Product Name</label><input id="editProduct"></div><div><label class="small-label">Task</label><select id="editTask"><option>Pending</option><option>Completed</option></select></div><div><label class="small-label">TID</label><input id="editTid"></div><div class="full"><label class="small-label">Remarks</label><input id="editRemarks"></div></div>
+<div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end"><button class="secondary" onclick="closeEdit()">Cancel</button><button class="primary" onclick="saveEdit()">Save Changes</button></div>
+</div></div>
+<div class="modal" id="guideModal"><div class="modal-box"><div class="modal-header"><h2 style="margin:0;font-size:18px">ORBIT Workflow Guide</h2><button class="close" onclick="closeGuide()">×</button></div><div style="font-size:13px;line-height:1.7;margin-top:12px"><b>Input:</b> Scan barcode or enter ASIN.<br><b>Product:</b> Product details can be fetched through the approved product-data integration in a later build.<br><b>Task:</b> Pending until a TID is entered. Completed after reconciliation.<br><b>Ageing:</b> Numeric days only; colours are 1 Green, 2 Yellow, 3 Amber, 4+ Red.<br><b>Retention:</b> Completed records leave the active dashboard 7 days after completion. Pending records remain active until completed.<br><b>Site Code:</b> Each site's view is scoped to its selected site code.</div></div></div>
+<div class="toast" id="toast"></div>
 <script>
-function searchAmazon(){
-  const code=document.getElementById('code').value.trim();
-  const result=document.getElementById('result');
-  if(!code){alert('Please scan or enter a barcode/ASIN.');return;}
-  const url='https://www.amazon.in/s?k='+encodeURIComponent(code);
-  result.style.display='block';
-  result.innerHTML=
-    '<b>Testing identifier:</b> '+escapeHtml(code)+
-    '<div class="status">Amazon.in search opened. Check whether the returned product matches the physical orphan item.</div>'+
-    '<div style="margin-top:14px"><button onclick="window.open(\''+url+'\',\'_blank\')">Open Amazon.in Result</button></div>'+
-    '<div class="grid">'+
-    '<div>Input</div><div class="value">'+escapeHtml(code)+'</div>'+
-    '<div>Lookup type</div><div class="value">'+(isAsin(code)?'ASIN':'Barcode / EAN / GTIN')+'</div>'+
-    '</div>';
-}
-function isAsin(s){return /^B0[A-Z0-9]{8,}$/.test(s.toUpperCase());}
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-document.getElementById('code').addEventListener('keydown',e=>{if(e.key==='Enter')searchAmazon()});
+const PRODUCT_DB={
+ 'B0DEMO001':{name:'Demo Wireless Headphones',value:2499,barcode:'890000000001',category:'Electronics'},'890000000001':{name:'Demo Wireless Headphones',value:2499,barcode:'890000000001',category:'Electronics'},
+ 'B0DEMO002':{name:'Demo Stainless Steel Bottle 1L',value:899,barcode:'890000000002',category:'Home & Kitchen'},'890000000002':{name:'Demo Stainless Steel Bottle 1L',value:899,barcode:'890000000002',category:'Home & Kitchen'},
+ 'B0DEMO003':{name:'Demo Bluetooth Speaker',value:1799,barcode:'890000000003',category:'Electronics'},'890000000003':{name:'Demo Bluetooth Speaker',value:1799,barcode:'890000000003',category:'Electronics'}
+};
+const seed=[
+ {id:1,site:'JULD',asin:'B0DEMO001',product:'Demo Wireless Headphones',value:2499,barcode:'890000000001',received:new Date(Date.now()-30*3600000).toISOString(),task:'Pending',tid:'',remarks:'',completedAt:null},
+ {id:2,site:'JULD',asin:'B0DEMO002',product:'Demo Stainless Steel Bottle 1L',value:899,barcode:'890000000002',received:new Date(Date.now()-55*3600000).toISOString(),task:'Completed',tid:'304r',remarks:'Processed',completedAt:new Date(Date.now()-6*3600000).toISOString()},
+ {id:3,site:'JULD',asin:'B0DEMO003',product:'Demo Bluetooth Speaker',value:1799,barcode:'890000000003',received:new Date(Date.now()-100*3600000).toISOString(),task:'Completed',tid:'TID-DEMO-003',remarks:'Processed',completedAt:new Date(Date.now()-8*24*3600000).toISOString()},
+ {id:4,site:'LKO1',asin:'B0DEMO001',product:'Demo Wireless Headphones',value:2499,barcode:'890000000001',received:new Date(Date.now()-10*3600000).toISOString(),task:'Pending',tid:'',remarks:'Other site sample',completedAt:null}
+];
+let records=JSON.parse(localStorage.getItem('orbitRecordsV2')||'null')||seed;
+let currentProduct=null,editingId=null,queueFilter='ALL';
+function save(){localStorage.setItem('orbitRecordsV2',JSON.stringify(records))}
+function site(){return document.getElementById('siteCode').value.trim().toUpperCase()||'JULD'}
+function cleanupCompleted(){const now=Date.now();records=records.filter(r=>!(r.task==='Completed'&&r.completedAt&&now-new Date(r.completedAt).getTime()>=7*24*3600000));save()}
+function ageInfo(iso){const hours=Math.max(0,(Date.now()-new Date(iso).getTime())/36e5);let d,cls;if(hours<24){d=1;cls='day1'}else if(hours<48){d=2;cls='day2'}else if(hours<72){d=3;cls='day3'}else{d=4;cls='day4'}return{d,cls}}
+function fmt(iso){return new Date(iso).toLocaleString('en-IN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function taskBadge(t){return '<span class="status '+(t==='Completed'?'completed':'pending')+'">'+(t==='Completed'?'●':'○')+' '+t+'</span>'}
+function ageBadge(a){return '<span class="age '+a.cls+'\"><span class="age-dot"></span>'+a.d+(a.d===4?'+':'')+'</span>'}
+function svgData(name){const initials=name.split(' ').slice(0,2).map(x=>x[0]).join('').toUpperCase();const svg='<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360"><rect width="360" height="360" rx="28" fill="#f3f4f6"/><rect x="55" y="60" width="250" height="210" rx="20" fill="#fff" stroke="#d1d5db"/><circle cx="180" cy="150" r="62" fill="#e5e7eb"/><text x="180" y="165" text-anchor="middle" font-size="40" font-family="Arial" font-weight="700" fill="#6b7280">'+initials+'</text><text x="180" y="310" text-anchor="middle" font-size="20" font-family="Arial" fill="#6b7280">Prototype Image</text></svg>';return'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent(svg)}
+function activeRecords(){cleanupCompleted();return records.filter(r=>r.site===site())}
+function setQueueFilter(f,btn){queueFilter=f;document.querySelectorAll('[data-pill]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.metric').forEach(x=>x.classList.toggle('active',x.dataset.filter===f));renderOps()}
+function setMetricFilter(f){queueFilter=f;document.querySelectorAll('.metric').forEach(x=>x.classList.toggle('active',x.dataset.filter===f));document.querySelectorAll('[data-pill]').forEach(x=>x.classList.toggle('active',x.dataset.pill===(f==='DAY4'?'ALL':f)));renderOps()}
+function changeSite(){queueFilter='ALL';document.querySelectorAll('.metric,.pill').forEach(x=>x.classList.remove('active'));document.querySelector('.metric[data-filter="ALL"]').classList.add('active');document.querySelector('.pill[data-pill="ALL"]').classList.add('active');renderAll()}
+function handleScanKey(e){if(e.key==='Enter')lookupProduct()}
+function lookupProduct(){const raw=document.getElementById('scanInput').value.trim().toUpperCase();if(!raw){toast('Please scan or enter an ASIN/barcode.');return}const p=PRODUCT_DB[raw];if(!p){toast('Prototype lookup: identifier not found in demo data. Live Amazon lookup is not connected yet.');document.getElementById('preview').classList.remove('show');return}const asin=raw.startsWith('B')?raw:(Object.keys(PRODUCT_DB).find(k=>k.startsWith('B')&&PRODUCT_DB[k].barcode===p.barcode)||raw);document.getElementById('previewImg').src=svgData(p.name);document.getElementById('previewName').textContent=p.name;document.getElementById('previewMeta').textContent='ASIN: '+asin+' • Barcode: '+p.barcode+' • '+p.category;document.getElementById('previewMrp').textContent=String(p.value);document.getElementById('preview').classList.add('show');addRecord({name:p.name,value:p.value,barcode:p.barcode,asin})}
+function addRecord(p){const now=Date.now();const dup=records.find(r=>r.site===site()&&r.asin===p.asin&&now-new Date(r.received).getTime()<60000);if(dup){toast('This item was already added just now.');return}records.unshift({id:Date.now(),site:site(),asin:p.asin,product:p.name,value:Number(p.value)||0,barcode:p.barcode,received:new Date().toISOString(),task:'Pending',tid:'',remarks:'',completedAt:null});save();renderAll();toast('Orphan added to '+site()+' processing queue.')}
+function openEdit(id){const r=records.find(x=>x.id===id);if(!r)return;editingId=id;document.getElementById('editSite').value=r.site;document.getElementById('editAsin').value=r.asin;document.getElementById('editBarcode').value=r.barcode||'';document.getElementById('editValue').value=r.value;document.getElementById('editProduct').value=r.product;document.getElementById('editTask').value=r.task;document.getElementById('editTid').value=r.tid||'';document.getElementById('editRemarks').value=r.remarks||'';document.getElementById('editModal').classList.add('show')}
+function closeEdit(){document.getElementById('editModal').classList.remove('show');editingId=null}
+function saveEdit(){const r=records.find(x=>x.id===editingId);if(!r)return;const prev=r.task;r.site=document.getElementById('editSite').value.trim().toUpperCase()||site();r.asin=document.getElementById('editAsin').value.trim().toUpperCase();r.barcode=document.getElementById('editBarcode').value.trim();r.value=Number(document.getElementById('editValue').value)||0;r.product=document.getElementById('editProduct').value.trim();r.task=document.getElementById('editTask').value;r.tid=document.getElementById('editTid').value.trim();r.remarks=document.getElementById('editRemarks').value.trim();if(r.task==='Completed'&&!r.completedAt)r.completedAt=new Date().toISOString();if(r.task==='Pending'){r.tid='';r.completedAt=null}if(prev!==r.task&&r.task==='Completed')r.completedAt=new Date().toISOString();save();closeEdit();renderAll();toast('Record updated.')}
+function renderOps(){const body=document.getElementById('opsBody');const rows=activeRecords().filter(r=>queueFilter==='PENDING'?r.task==='Pending':queueFilter==='COMPLETED'?r.task==='Completed':queueFilter==='DAY4'?ageInfo(r.received).d===4:true);document.getElementById('queueFilterTitle').textContent='Showing: '+(queueFilter==='ALL'?'All active orphans':queueFilter==='DAY4'?'Day 4+ active orphans':queueFilter.charAt(0)+queueFilter.slice(1).toLowerCase()+' records');body.innerHTML=rows.length?rows.map((r,i)=>{const a=ageInfo(r.received);return '<tr><td>'+(i+1)+'</td><td><b>'+escapeHtml(r.asin)+'</b></td><td>'+escapeHtml(r.barcode||'—')+'</td><td style="max-width:230px">'+escapeHtml(r.product)+'</td><td><b>'+escapeHtml(String(r.value))+'</b></td><td><img class="thumb" src="'+svgData(r.product)+'" alt=""></td><td>'+fmt(r.received)+'</td><td>'+taskBadge(r.task)+'</td><td>'+ageBadge(a)+'</td><td>'+escapeHtml(r.tid||'—')+'</td><td><button class="icon-btn" title="Edit record" onclick="openEdit('+r.id+')">✎</button></td></tr>'}).join(''):'<tr><td colspan="11" class="empty">No records found for this view.</td></tr>'}
+function renderData(){const body=document.getElementById('dataBody');const q=(document.getElementById('searchData').value||'').trim().toLowerCase();const s=document.getElementById('statusData').value;const rows=records.filter(r=>r.site===site()&&(!q||[r.asin,r.barcode,r.product,r.tid].join(' ').toLowerCase().includes(q))&&(s==='ALL'||r.task===s));body.innerHTML=rows.length?rows.map((r,i)=>{const a=ageInfo(r.received);return '<tr><td>'+(i+1)+'</td><td>'+escapeHtml(r.site)+'</td><td><b>'+escapeHtml(r.asin)+'</b></td><td>'+escapeHtml(r.barcode||'—')+'</td><td>'+escapeHtml(r.product)+'</td><td><b>'+escapeHtml(String(r.value))+'</b></td><td>'+fmt(r.received)+'</td><td>'+taskBadge(r.task)+'</td><td>'+ageBadge(a)+'</td><td>'+escapeHtml(r.tid||'—')+'</td><td>'+(r.completedAt?fmt(r.completedAt):'—')+'</td><td><button class="icon-btn" title="Edit record" onclick="openEdit('+r.id+')">✎</button></td></tr>'}).join(''):'<tr><td colspan="12" class="empty">No stored records match the current filters.</td></tr>'}
+function updateMetrics(){const rows=activeRecords();document.getElementById('mTotal').textContent=rows.length;document.getElementById('mPending').textContent=rows.filter(r=>r.task==='Pending').length;document.getElementById('mCompleted').textContent=rows.filter(r=>r.task==='Completed').length;document.getElementById('mCritical').textContent=rows.filter(r=>ageInfo(r.received).d===4).length}
+function renderAll(){updateMetrics();renderOps();renderData()}
+function showPage(p){document.getElementById('pageOps').classList.toggle('hidden',p!=='ops');document.getElementById('pageData').classList.toggle('hidden',p!=='data');document.getElementById('navOps').classList.toggle('active',p==='ops');document.getElementById('navData').classList.toggle('active',p==='data');renderAll()}
+function exportCsv(allData=false){const rows=(allData?records.filter(r=>r.site===site()):activeRecords().filter(r=>queueFilter==='ALL'||(queueFilter==='DAY4'?ageInfo(r.received).d===4:r.task===queueFilter)));const headers=['Sr. No.','Site Code','ASIN ID','Barcode','Product Name','Value (INR)','Received Date & Time','Task','Ageing','TID','Completed Date & Time','Remarks'];const data=[headers,...rows.map((r,i)=>[i+1,r.site,r.asin,r.barcode,r.product,r.value,fmt(r.received),r.task,ageInfo(r.received).d===4?'4+':ageInfo(r.received).d,r.tid,r.completedAt?fmt(r.completedAt):'',r.remarks])];const csv=data.map(row=>row.map(v=>'\"'+String(v??'').replace(/\"/g,'\"\"')+'\"').join(',')).join('\\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='ORBIT_'+site()+'_'+new Date().toISOString().slice(0,10)+'.csv';a.click();URL.revokeObjectURL(url);toast('CSV export generated.')}
+function printReport(){window.print()}function openGuide(){document.getElementById('guideModal').classList.add('show')}function closeGuide(){document.getElementById('guideModal').classList.remove('show')}function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove('show'),2400)}function escapeHtml(s){return String(s??'').replace(/[&<>\"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#039;'}[m]))}
+renderAll();setInterval(renderAll,60000);
 </script>
 </body>
 </html>
