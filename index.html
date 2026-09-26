@@ -48,15 +48,45 @@ document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>
 function setFilter(f,btn){filter=f;document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');render()}
 document.getElementById('siteCode').addEventListener('input',render);
 async function lookup(){
-const input=document.getElementById('scan').value.trim();const st=document.getElementById('status');const pv=document.getElementById('preview');const b=document.getElementById('lookupBtn');if(!input){st.style.display='block';st.textContent='Please scan or enter an ASIN/barcode.';return}
-st.style.display='block';st.className='status';st.textContent='Searching live product-identification data…';b.disabled=true;pv.classList.remove('show');
+const input=document.getElementById('scan').value.trim();
+const st=document.getElementById('status');
+const pv=document.getElementById('preview');
+const b=document.getElementById('lookupBtn');
+if(!input){st.style.display='block';st.className='status';st.textContent='Please scan or enter an ASIN/barcode.';return}
+st.style.display='block';st.className='status';st.textContent='Looking up '+input+' …';b.disabled=true;pv.classList.remove('show');
+const target='https://api.upcitemdb.com/prod/trial/lookup?upc='+encodeURIComponent(input);
+const proxy='https://corsproxy.io/?url='+encodeURIComponent(target);
+const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),12000);
 try{
-if(/^B[A-Z0-9]{9,}$/i.test(input)){window.open('https://www.amazon.in/s?k='+encodeURIComponent(input),'_blank');st.textContent='ASIN sent to Amazon.in search in a new tab. Browser-only pages cannot read Amazon product details automatically.';return}
-const resp=await fetch('https://api.upcitemdb.com/prod/trial/lookup?upc='+encodeURIComponent(input));if(!resp.ok)throw new Error('lookup '+resp.status);const data=await resp.json();if(!data.items||!data.items.length)throw new Error('No barcode match');
-const item=data.items[0];document.getElementById('pname').textContent=item.title||'Product found';document.getElementById('pmeta').textContent='Brand: '+(item.brand||'—')+' • EAN/GTIN: '+(item.ean||input);document.getElementById('pasin').textContent='ASIN: '+(item.asin||'Not provided by lookup source');
-document.getElementById('pvalue').textContent=item.lowest_recorded_price??'—';document.getElementById('pimg').src=(item.images&&item.images[0])||imgFallback(item.title||'Product');pv.classList.add('show');st.className='status ok';st.innerHTML='Barcode matched a live product record. <button class="btn" style="margin-left:8px;padding:7px 10px" onclick="window.open(\'https://www.amazon.in/s?k='+encodeURIComponent(item.asin||item.title||input)+'\',\'_blank\')">Verify on Amazon.in</button>';
-}catch(e){st.className='status';st.textContent='No live barcode match was returned. You can verify the identifier by opening Amazon.in search.';window.open('https://www.amazon.in/s?k='+encodeURIComponent(input),'_blank')}
-finally{b.disabled=false}
+if(/^B[A-Z0-9]{9,}$/i.test(input)){
+st.className='status ok';st.innerHTML='ASIN detected. Use the button below to verify this ASIN on Amazon.in.'+
+' <button class="btn" style="margin-left:8px;padding:7px 10px" onclick="window.open(\\'https://www.amazon.in/s?k='+encodeURIComponent(input)+'\\',\\'_blank\\')">Open Amazon.in</button>';
+return;
+}
+const resp=await fetch(proxy,{signal:controller.signal});
+if(!resp.ok)throw new Error('HTTP '+resp.status);
+const data=await resp.json();
+if(!data.items||!data.items.length){
+st.className='status';st.innerHTML='No product record was returned for this barcode. '+
+'<button class="btn" style="margin-left:8px;padding:7px 10px" onclick="window.open(\\'https://www.amazon.in/s?k='+encodeURIComponent(input)+'\\',\\'_blank\\')">Verify on Amazon.in</button>';
+return;
+}
+const item=data.items[0];
+document.getElementById('pname').textContent=item.title||'Product found';
+document.getElementById('pmeta').textContent='Brand: '+(item.brand||'—')+' • EAN/GTIN: '+(item.ean||input);
+document.getElementById('pasin').textContent='ASIN: '+(item.asin||'Not provided by lookup source');
+document.getElementById('pvalue').textContent=item.lowest_recorded_price??'—';
+document.getElementById('pimg').src=(item.images&&item.images[0])||imgFallback(item.title||'Product');
+pv.classList.add('show');
+st.className='status ok';
+st.innerHTML='Live barcode lookup returned a product record. '+
+'<button class="btn" style="margin-left:8px;padding:7px 10px" onclick="window.open(\\'https://www.amazon.in/s?k='+encodeURIComponent(item.asin||item.title||input)+'\\',\\'_blank\\')">Verify on Amazon.in</button>';
+}catch(e){
+st.className='status';
+if(e.name==='AbortError') st.textContent='Lookup timed out after 12 seconds. Please try again.';
+else st.innerHTML='Live lookup could not be reached from the browser (often caused by third-party CORS/network restrictions). '+
+'<button class="btn" style="margin-left:8px;padding:7px 10px" onclick="window.open(\\'https://www.amazon.in/s?k='+encodeURIComponent(input)+'\\',\\'_blank\\')">Open Amazon.in Search</button>';
+}finally{clearTimeout(timer);b.disabled=false}
 }
 function editRecord(id){const r=records.find(x=>x.id===id);if(!r)return;const asin=prompt('ASIN ID',r.asin);if(asin===null)return;const tid=prompt('TID',r.tid||'');if(tid===null)return;r.asin=asin.trim().toUpperCase();r.tid=tid.trim();if(r.tid)r.task='Completed';render()}
 function exportCsv(){const s=document.getElementById('siteCode').value.trim().toUpperCase()||'JULD';const rows=records.filter(r=>r.site===s);const h=['Sr. No.','Site Code','ASIN ID','Barcode','Product Name','Value (INR)','Received','Task','Ageing','TID'];const lines=[h,...rows.map((r,i)=>[i+1,r.site,r.asin,r.barcode,r.product,r.value,new Date(r.received).toLocaleString('en-IN'),r.task,age(r),r.tid||''])].map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));const blob=new Blob([lines.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ORBIT_'+s+'.csv';a.click()}
