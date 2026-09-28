@@ -8,14 +8,14 @@
 <meta http-equiv="Expires" content="0">
 <title>ORBIT — Orphan Resolution and Backlog Intelligence Tracker</title>
 <style>
-body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172033}.app{display:flex;min-height:100vh}.side{width:230px;background:#111827;color:#fff;padding:20px}.brand{font-size:22px;font-weight:800}.tag{font-size:11px;color:#cbd5e1;line-height:1.35;margin-top:3px}.nav{margin-top:28px;display:grid;gap:8px}.nav div{padding:12px;border-radius:9px;background:#253047}.main{flex:1;padding:24px;overflow:auto}.top{display:flex;justify-content:space-between;align-items:center}.site{background:#fff;border:1px solid #dfe4eb;border-radius:10px;padding:10px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}.metric,.section{background:#fff;border:1px solid #e1e6ed;border-radius:14px;padding:18px;box-shadow:0 5px 18px #0000000c}.metric{cursor:pointer}.metric:hover{border-color:#94a3b8}.metric .num{font-size:29px;font-weight:800;margin-top:6px}.section{margin-bottom:16px}.section h3{margin:0 0 12px;font-size:15px}.row{display:flex;gap:10px}.row input{flex:1;padding:13px;border:1px solid #cbd5e1;border-radius:9px;font-size:14px}.btn{padding:12px 16px;border:0;border-radius:9px;background:#111827;color:#fff;font-weight:700;cursor:pointer}.btn:disabled{opacity:.55;cursor:wait}.preview{display:none;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;border:1px dashed #cbd5e1;border-radius:12px;padding:12px;margin-top:12px;background:#fafafa}.preview.show{display:grid}.img{width:86px;height:86px;display:grid;place-items:center;border:1px solid #e5e7eb;border-radius:10px;background:#fff;overflow:hidden}.img img{width:100%;height:100%;object-fit:contain}.pname{font-weight:800}.muted{font-size:12px;color:#687386;margin-top:4px}.value{font-size:20px;font-weight:900;text-align:right}.value small{display:block;font-size:10px;color:#687386}.status{margin-top:12px;padding:10px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:12px}.ok{background:#ecfdf5;color:#166534}.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}.pill{border:1px solid #d9dee6;background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer}.pill.active{background:#111827;color:#fff;border-color:#111827}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1050px;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e5e7eb}th{font-size:10px;text-transform:uppercase;background:#f8fafc;color:#64748b}.age{display:inline-block;padding:5px 8px;border-radius:7px;font-weight:800}.d1{background:#dcfce7}.d2{background:#fef9c3}.d3{background:#ffedd5}.d4{background:#fee2e2}.edit{border:1px solid #d9dee6;background:#fff;border-radius:7px;padding:6px 8px;cursor:pointer}.empty{text-align:center;padding:28px;color:#687386}@media(max-width:900px){.side{display:none}.metrics{grid-template-columns:1fr 1fr}.main{padding:14px}}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#071525;color:#e7eef8}.app{display:flex;min-height:100vh}.side{width:225px;background:#06111f;color:#fff;padding:20px;border-right:1px solid #17304a}.brand{font-size:25px;font-weight:900;letter-spacing:.5px}.tag{font-size:11px;color:#9fb1c7;line-height:1.35;margin-top:3px}.nav{margin-top:28px;display:grid;gap:8px}.nav div{padding:12px;border-radius:9px;background:#0d2035;color:#cbd8e8}.nav div:first-child{background:#0d4ea6;color:#fff}.main{flex:1;padding:22px;overflow:auto}.top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #17304a;padding-bottom:14px}.topRight{display:flex;gap:8px;align-items:center}.site{background:#0b1c2e;border:1px solid #244563;border-radius:10px;padding:8px;color:#dbeafe}.topField{display:flex;align-items:center;gap:7px}.topField label{font-size:9px;color:#8fa7bf;font-weight:800;letter-spacing:.8px}.topField input{width:92px;padding:8px 9px;background:#0d2338;color:#fff;border:1px solid #315676;border-radius:7px;font-weight:700}.topField.vr input{width:105px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:16px 0}.metric,.section{background:#0b1c2e;border:1px solid #173b59;border-radius:14px;padding:18px;box-shadow:0 8px 24px #00000022}.metric{cursor:pointer}.metric:hover{border-color:#2d6b98}.metric .num{font-size:29px;font-weight:800;margin-top:6px}.section{margin-bottom:16px}.section h3{margin:0 0 12px;font-size:15px}.row{display:flex;gap:10px}.row input{flex:1;padding:13px;border:1px solid #315676;border-radius:9px;font-size:14px;background:#081a2b;color:#fff}.btn{padding:12px 16px;border:0;border-radius:9px;background:#087cf5;color:#fff;font-weight:800;cursor:pointer}.btn:hover{background:#1590ff}.btn:disabled{opacity:.55;cursor:wait}.preview{display:none;grid-template-columns:90px 1fr auto;gap:14px;align-items:center;border:1px dashed #315676;border-radius:12px;padding:12px;margin-top:12px;background:#081a2b}.preview.show{display:grid}.img{width:86px;height:86px;display:grid;place-items:center;border:1px solid #e5e7eb;border-radius:10px;background:#fff;overflow:hidden}.img img{width:100%;height:100%;object-fit:contain}.pname{font-weight:800}.muted{font-size:12px;color:#8fa7bf;margin-top:4px}.value{font-size:20px;font-weight:900;text-align:right}.value small{display:block;font-size:10px;color:#687386}.status{margin-top:12px;padding:10px;border-radius:8px;background:#3b2410;color:#ffd7a3;font-size:12px}.ok{background:#0b3427;color:#91f2c6}.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}.pill{border:1px solid #315676;background:#0b1c2e;color:#cbd8e8;border-radius:999px;padding:8px 12px;cursor:pointer}.pill.active{background:#087cf5;color:#fff;border-color:#087cf5}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:1050px;font-size:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e5e7eb}th{font-size:10px;text-transform:uppercase;background:#0d2338;color:#91a8bf}.age{display:inline-block;padding:5px 8px;border-radius:7px;font-weight:800}.d1{background:#dcfce7}.d2{background:#fef9c3}.d3{background:#ffedd5}.d4{background:#fee2e2}.edit{border:1px solid #315676;background:#0d2338;color:#fff;border-radius:7px;padding:6px 8px;cursor:pointer}.empty{text-align:center;padding:28px;color:#687386}@media(max-width:900px){.side{display:none}.metrics{grid-template-columns:1fr 1fr}.main{padding:14px}}
 </style>
 </head>
 <body>
 <div class="app">
 <aside class="side"><div class="brand">ORBIT</div><div class="tag">Orphan Resolution and Backlog Intelligence Tracker</div><div class="nav"><div>⚙ Operations</div><div>▤ Stored Data</div><div>? Workflow Guide</div></div></aside>
 <main class="main">
-<div class="top"><div><h1 style="margin:0 0 3px">ORBIT</h1><div class="muted">Orphan Resolution and Backlog Intelligence Tracker</div><div style="margin-top:6px;font-size:11px;font-weight:800;color:#166534">AUTO BARCODE LOOKUP • V3</div></div><div class="site"><b style="font-size:10px">SITE CODE</b><br><input id="siteCode" value="JULD" style="width:90px;padding:8px;border:1px solid #d9dee6;border-radius:7px"></div></div>
+<div class="top"><div><h1 style="margin:0 0 3px">ORBIT Dashboard</h1><div class="muted">Orphan Resolution and Backlog Intelligence Tracker</div></div><div class="topRight"><div class="topField vr"><label>VR ID</label><input id="vrId" placeholder="VR ID" autocomplete="off"></div><div class="topField"><label>SITE CODE</label><input id="siteCode" value="JULD" maxlength="10" autocomplete="off"></div></div></div>
 <div class="metrics">
 <div class="metric" onclick="setFilter('ALL')"><div>Total Orphans</div><div class="num" id="total">3</div></div>
 <div class="metric" onclick="setFilter('Pending')"><div>Pending</div><div class="num" id="pending">2</div></div>
@@ -23,25 +23,26 @@ body{margin:0;font-family:Arial,sans-serif;background:#f4f6f8;color:#172033}.app
 <div class="metric" onclick="setFilter('DAY4')"><div>Day 4+</div><div class="num" id="day4">1</div></div>
 </div>
 <div class="section">
-<h3>1. Scan / Enter ASIN or Barcode</h3>
+<h3>Scan / Enter Barcode or ASIN</h3>
 <div class="row"><input id="scan" placeholder="SCAN BARCODE → AUTO PRODUCT DETAILS" autocomplete="off" autofocus><button class="btn" id="lookupBtn" onclick="lookup()">Find Product</button></div>
-<div class="muted">SCAN MODE: Enter/scan barcode → ORBIT automatically searches product databases and flashes available Product, Image, ASIN and VALUE (INR) below.</div>
+<div class="muted">Active VR ID: <b id="activeVrLabel">Not set</b> • Scan/enter a barcode or ASIN. Product details will flash below and the record will be saved against this VR ID + Site Code.</div>
 <div id="status" class="status" style="display:none"></div>
-<div id="preview" class="preview"><div class="img"><img id="pimg" alt=""></div><div><div class="pname" id="pname"></div><div class="muted" id="pmeta"></div><div class="muted" id="pasin"></div></div><div class="value"><small>VALUE (INR)</small><span id="pvalue">—</span></div></div>
+<div id="preview" class="preview"><div class="img"><img id="pimg" alt=""></div><div><div class="pname" id="pname"></div><div class="muted" id="pmeta"></div><div class="muted" id="pasin"></div><div class="muted" id="pbarcode"></div></div><div class="value"><small>VALUE (INR)</small><span id="pvalue">—</span></div></div>
 </div>
 <div class="section"><h3>2. Processing Queue</h3>
 <div class="tabs"><button class="pill active" onclick="setFilter('ALL',this)">All</button><button class="pill" onclick="setFilter('Pending',this)">Pending</button><button class="pill" onclick="setFilter('Completed',this)">Completed</button><button class="pill" onclick="exportCsv()">Export Excel-compatible CSV</button></div>
-<div class="tablewrap"><table><thead><tr><th>Sr.</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Image</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Edit</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="tablewrap"><table><thead><tr><th>Sr.</th><th>Site Code</th><th>VR ID</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Image</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Edit</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </main></div>
 <script>
 let filter='ALL';
 let autoTimer=null;
 let lastAutoValue='';
-let records=[
-{id:1,site:'JULD',asin:'B0DEMO001',barcode:'890000000001',product:'Demo Wireless Headphones',value:2499,received:new Date(Date.now()-30*3600000).toISOString(),task:'Pending',tid:''},
-{id:2,site:'JULD',asin:'B0DEMO002',barcode:'890000000002',product:'Demo Stainless Steel Bottle 1L',value:899,received:new Date(Date.now()-55*3600000).toISOString(),task:'Completed',tid:'304r'},
-{id:3,site:'JULD',asin:'B0DEMO003',barcode:'890000000003',product:'Demo Bluetooth Speaker',value:1799,received:new Date(Date.now()-100*3600000).toISOString(),task:'Completed',tid:'TID-DEMO-003'}
+let records=JSON.parse(localStorage.getItem('orbitRecords')||'null')||[
+{id:1,site:'JULD',vr:'VR-DEMO-001',asin:'B0DEMO001',barcode:'890000000001',product:'Demo Wireless Headphones',value:2499,received:new Date(Date.now()-30*3600000).toISOString(),task:'Pending',tid:''},
+{id:2,site:'JULD',vr:'VR-DEMO-001',asin:'B0DEMO002',barcode:'890000000002',product:'Demo Stainless Steel Bottle 1L',value:899,received:new Date(Date.now()-55*3600000).toISOString(),task:'Completed',tid:'304r'},
+{id:3,site:'JULD',vr:'VR-DEMO-002',asin:'B0DEMO003',barcode:'890000000003',product:'Demo Bluetooth Speaker',value:1799,received:new Date(Date.now()-100*3600000).toISOString(),task:'Completed',tid:'TID-DEMO-003'}
 ];
+function save(){localStorage.setItem('orbitRecords',JSON.stringify(records));localStorage.setItem('orbitSite',document.getElementById('siteCode').value.trim().toUpperCase()||'JULD');localStorage.setItem('orbitVr',document.getElementById('vrId').value.trim().toUpperCase())}
 function age(r){let d=Math.floor((Date.now()-new Date(r.received).getTime())/86400000)+1;return d>=4?4:d}
 function imgFallback(title){return 'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="20" fill="#6b7280">'+title.slice(0,18)+'</text></svg>')}
 function render(){
@@ -49,9 +50,13 @@ const s=document.getElementById('siteCode').value.trim().toUpperCase()||'JULD';
 const rs=records.filter(r=>r.site===s);
 document.getElementById('total').textContent=rs.length;document.getElementById('pending').textContent=rs.filter(r=>r.task==='Pending').length;document.getElementById('completed').textContent=rs.filter(r=>r.task==='Completed').length;document.getElementById('day4').textContent=rs.filter(r=>age(r)===4).length;
 let show=rs.filter(r=>filter==='ALL'||(filter==='DAY4'?age(r)===4:r.task===filter));
-document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+r.asin+'</b></td><td>'+r.barcode+'</td><td>'+r.product+'</td><td><b>'+r.value+'</b></td><td><img src="'+imgFallback('Product')+'" style="width:42px;height:42px;border:1px solid #ddd;border-radius:7px"></td><td>'+new Date(r.received).toLocaleString('en-IN')+'</td><td>'+r.task+'</td><td><span class="age '+(age(r)===1?'d1':age(r)===2?'d2':age(r)===3?'d3':'d4')+'">'+age(r)+(age(r)===4?'+':'')+'</span></td><td>'+ (r.tid||'—') +'</td><td><button class="edit" onclick="editRecord('+r.id+')">✎</button></td></tr>').join(''):'<tr><td colspan="11" class="empty">No records for this site/filter.</td></tr>'}
+document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r.site+'</td><td><b>'+r.vr+'</b></td><td><b>'+r.asin+'</b></td><td>'+r.barcode+'</td><td>'+r.product+'</td><td><b>'+r.value+'</b></td><td><img src="'+imgFallback('Product')+'" style="width:42px;height:42px;border:1px solid #315676;border-radius:7px"></td><td>'+new Date(r.received).toLocaleString('en-IN')+'</td><td>'+r.task+'</td><td><span class="age '+(age(r)===1?'d1':age(r)===2?'d2':age(r)===3?'d3':'d4')+'">'+age(r)+(age(r)===4?'+':'')+'</span></td><td>'+ (r.tid||'—') +'</td><td><button class="edit" onclick="editRecord('+r.id+')">✎</button></td></tr>').join(''):'<tr><td colspan="12" class="empty">No records for this site/filter.</td></tr>'}
 function setFilter(f,btn){filter=f;document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');render()}
-document.getElementById('siteCode').addEventListener('input',render);
+document.getElementById('siteCode').value=localStorage.getItem('orbitSite')||'JULD';
+document.getElementById('vrId').value=localStorage.getItem('orbitVr')||'';
+document.getElementById('activeVrLabel').textContent=document.getElementById('vrId').value.trim().toUpperCase()||'Not set';
+document.getElementById('siteCode').addEventListener('input',()=>{save();render()});
+document.getElementById('vrId').addEventListener('input',()=>{document.getElementById('activeVrLabel').textContent=document.getElementById('vrId').value.trim().toUpperCase()||'Not set';save()});
 
 const scanInput=document.getElementById('scan');
 scanInput.addEventListener('keydown',function(event){
@@ -79,10 +84,15 @@ async function lookup(){
   const st=document.getElementById("status");
   const pv=document.getElementById("preview");
   const b=document.getElementById("lookupBtn");
+  const vr=document.getElementById("vrId").value.trim().toUpperCase();
+  const site=document.getElementById("siteCode").value.trim().toUpperCase()||"JULD";
+  if(!vr){
+    st.style.display="block"; st.className="status";
+    st.textContent="Set the VR ID at the top before scanning an orphan."; document.getElementById("vrId").focus(); return;
+  }
   if(!input){
     st.style.display="block"; st.className="status";
-    st.textContent="Please scan or enter an ASIN/barcode.";
-    return;
+    st.textContent="Please scan or enter an ASIN/barcode."; return;
   }
   st.style.display="block"; st.className="status";
   st.textContent="Fetching product details automatically…";
@@ -104,7 +114,8 @@ async function lookup(){
     document.getElementById("pimg").src=imgFallback(p.name);
     pv.classList.add("show");
     st.className="status ok";
-    st.textContent="Product details loaded automatically.";
+    st.textContent="Product details loaded automatically and linked to VR ID "+vr+".";
+    addRecord({site,vr,asin:p.asin,barcode:input,product:p.name,value:p.value});
     b.disabled=false; return;
   }
 
@@ -117,7 +128,8 @@ async function lookup(){
     document.getElementById("pimg").src=imgFallback("Amazon");
     pv.classList.add("show");
     st.className="status ok";
-    st.textContent="ASIN detected. Barcode lookup is available automatically when a barcode is scanned.";
+    st.textContent="ASIN detected and linked to VR ID "+vr+". Barcode can be added when available.";
+    addRecord({site,vr,asin:input.toUpperCase(),barcode:"",product:"Amazon product",value:""});
     b.disabled=false; return;
   }
 
@@ -163,7 +175,8 @@ async function lookup(){
         document.getElementById("pimg").src=image||imgFallback(title);
         pv.classList.add("show");
         st.className="status ok";
-        st.textContent="Product details loaded automatically from "+source.name+".";
+        st.textContent="Product details loaded automatically from "+source.name+" and linked to VR ID "+vr+".";
+        addRecord({site,vr,asin:asin||"",barcode:input,product:title,value:value});
         b.disabled=false;
         return;
       }catch(e){ lastError=e; }
@@ -174,8 +187,14 @@ async function lookup(){
     b.disabled=false;
   }
 }
-function editRecord(id){const r=records.find(x=>x.id===id);if(!r)return;const asin=prompt('ASIN ID',r.asin);if(asin===null)return;const tid=prompt('TID',r.tid||'');if(tid===null)return;r.asin=asin.trim().toUpperCase();r.tid=tid.trim();if(r.tid)r.task='Completed';render()}
-function exportCsv(){const s=document.getElementById('siteCode').value.trim().toUpperCase()||'JULD';const rows=records.filter(r=>r.site===s);const h=['Sr. No.','Site Code','ASIN ID','Barcode','Product Name','Value (INR)','Received','Task','Ageing','TID'];const lines=[h,...rows.map((r,i)=>[i+1,r.site,r.asin,r.barcode,r.product,r.value,new Date(r.received).toLocaleString('en-IN'),r.task,age(r),r.tid||''])].map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));const blob=new Blob([lines.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ORBIT_'+s+'.csv';a.click()}
+function addRecord(data){
+  const duplicate=records.find(r=>r.site===data.site&&r.vr===data.vr&&r.barcode===data.barcode&&data.barcode);
+  if(duplicate){return;}
+  records.unshift({id:Date.now(),site:data.site,vr:data.vr,asin:data.asin||"—",barcode:data.barcode||"—",product:data.product||"Product",value:data.value??"—",received:new Date().toISOString(),task:"Pending",tid:""});
+  save(); render();
+}
+function editRecord(id){const r=records.find(x=>x.id===id);if(!r)return;const vr=prompt('VR ID',r.vr);if(vr===null)return;const asin=prompt('ASIN ID',r.asin);if(asin===null)return;const tid=prompt('TID',r.tid||'');if(tid===null)return;r.vr=vr.trim().toUpperCase();r.asin=asin.trim().toUpperCase();r.tid=tid.trim();if(r.tid)r.task='Completed';save();render()}
+function exportCsv(){const s=document.getElementById('siteCode').value.trim().toUpperCase()||'JULD';const rows=records.filter(r=>r.site===s);const h=['Sr. No.','Site Code','VR ID','ASIN ID','Barcode','Product Name','Value (INR)','Received','Task','Ageing','TID'];const lines=[h,...rows.map((r,i)=>[i+1,r.site,r.vr,r.asin,r.barcode,r.product,r.value,new Date(r.received).toLocaleString('en-IN'),r.task,age(r),r.tid||''])].map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));const blob=new Blob([lines.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ORBIT_'+s+'.csv';a.click()}
 render();
 </script>
 </body></html>
