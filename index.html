@@ -15,7 +15,7 @@ body{margin:0;font-family:Inter,Arial,sans-serif;background:#071525;color:#e7eef
 <div class="app">
 <aside class="side"><div class="brand">ORBIT</div><div class="tag">Orphan Resolution and Backlog Intelligence Tracker</div><div class="nav"><div>⚙ Operations</div><div>▤ Stored Data</div><div>? Workflow Guide</div></div></aside>
 <main class="main">
-<div class="top"><div><h1 style="margin:0 0 3px">ORBIT Dashboard</h1><div class="muted">Orphan Resolution and Backlog Intelligence Tracker</div></div><div class="topRight"><div class="topField vr"><label>VR ID</label><input id="vrId" placeholder="VR ID" autocomplete="off"></div><div class="topField"><label>SITE CODE</label><input id="siteCode" value="JULD" maxlength="10" autocomplete="off"></div></div></div>
+<div class="top"><div><h1 style="margin:0 0 3px">ORBIT Dashboard</h1><div class="muted">Orphan Resolution and Backlog Intelligence Tracker • V4</div></div><div class="topRight"><div class="topField vr"><label>VR ID</label><input id="vrId" placeholder="VR ID" autocomplete="off"></div><div class="topField"><label>SITE CODE</label><input id="siteCode" value="JULD" maxlength="10" autocomplete="off"></div></div></div>
 <div class="metrics">
 <div class="metric" onclick="setFilter('ALL')"><div>Total Orphans</div><div class="num" id="total">3</div></div>
 <div class="metric" onclick="setFilter('Pending')"><div>Pending</div><div class="num" id="pending">2</div></div>
@@ -31,7 +31,7 @@ body{margin:0;font-family:Inter,Arial,sans-serif;background:#071525;color:#e7eef
 </div>
 <div class="section"><h3>2. Processing Queue</h3>
 <div class="tabs"><button class="pill active" onclick="setFilter('ALL',this)">All</button><button class="pill" onclick="setFilter('Pending',this)">Pending</button><button class="pill" onclick="setFilter('Completed',this)">Completed</button><button class="pill" onclick="exportCsv()">Export Excel-compatible CSV</button></div>
-<div class="tablewrap"><table><thead><tr><th>Sr.</th><th>Site Code</th><th>VR ID</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Image</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Edit</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div class="tablewrap"><table><thead><tr><th>Sr.</th><th style="min-width:95px">VR ID</th><th>Site Code</th><th>ASIN ID</th><th>Barcode</th><th>Product</th><th>Value (INR)</th><th>Image</th><th>Received</th><th>Task</th><th>Ageing</th><th>TID</th><th>Edit</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
 </main></div>
 <script>
 let filter='ALL';
@@ -50,7 +50,7 @@ const s=document.getElementById('siteCode').value.trim().toUpperCase()||'JULD';
 const rs=records.filter(r=>r.site===s);
 document.getElementById('total').textContent=rs.length;document.getElementById('pending').textContent=rs.filter(r=>r.task==='Pending').length;document.getElementById('completed').textContent=rs.filter(r=>r.task==='Completed').length;document.getElementById('day4').textContent=rs.filter(r=>age(r)===4).length;
 let show=rs.filter(r=>filter==='ALL'||(filter==='DAY4'?age(r)===4:r.task===filter));
-document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+r.site+'</td><td><b>'+r.vr+'</b></td><td><b>'+r.asin+'</b></td><td>'+r.barcode+'</td><td>'+r.product+'</td><td><b>'+r.value+'</b></td><td><img src="'+imgFallback('Product')+'" style="width:42px;height:42px;border:1px solid #315676;border-radius:7px"></td><td>'+new Date(r.received).toLocaleString('en-IN')+'</td><td>'+r.task+'</td><td><span class="age '+(age(r)===1?'d1':age(r)===2?'d2':age(r)===3?'d3':'d4')+'">'+age(r)+(age(r)===4?'+':'')+'</span></td><td>'+ (r.tid||'—') +'</td><td><button class="edit" onclick="editRecord('+r.id+')">✎</button></td></tr>').join(''):'<tr><td colspan="13" class="empty">No records for this site/filter.</td></tr>'}
+document.getElementById('tbody').innerHTML=show.length?show.map((r,i)=>'<tr><td>'+(i+1)+'</td><td><b style="color:#59b8ff">'+r.vr+'</b></td><td>'+r.site+'</td><td><b>'+r.asin+'</b></td><td>'+r.barcode+'</td><td>'+r.product+'</td><td><b>'+r.value+'</b></td><td><img src="'+imgFallback('Product')+'" style="width:42px;height:42px;border:1px solid #315676;border-radius:7px"></td><td>'+new Date(r.received).toLocaleString('en-IN')+'</td><td>'+r.task+'</td><td><span class="age '+(age(r)===1?'d1':age(r)===2?'d2':age(r)===3?'d3':'d4')+'">'+age(r)+(age(r)===4?'+':'')+'</span></td><td>'+ (r.tid||'—') +'</td><td><button class="edit" onclick="editRecord('+r.id+')">✎</button></td></tr>').join(''):'<tr><td colspan="13" class="empty">No records for this site/filter.</td></tr>'}
 function setFilter(f,btn){filter=f;document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');render()}
 document.getElementById('siteCode').value=localStorage.getItem('orbitSite')||'JULD';
 document.getElementById('vrId').value=localStorage.getItem('orbitVr')||'';
